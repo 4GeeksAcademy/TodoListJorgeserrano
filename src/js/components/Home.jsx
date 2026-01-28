@@ -1,28 +1,57 @@
-import React from "react";
+import { useState } from "react"
 
-//include images into your bundle
-import rigoImage from "../../img/rigo-baby.jpg";
-
-//create your first component
 const Home = () => {
+
+	const [input, setInput] = useState("")
+	const [box, setBox] = useState([])
+
+	const ejecutar = (e) => {
+
+		e.preventDefault()
+
+		let nuevaTarea = {
+			label: input,
+			is_done: false
+		}
+
+		setBox([...box, nuevaTarea])
+		setInput("")
+
+	}
+
+	const borrar = (i) => {
+
+		const nuevoArray = box.filter((_, index) => index !== i);
+        setBox(nuevoArray)
+	}
+
+
 	return (
-		<div className="text-center">
-            
+		<div className="">
+			<h1>
+				todos
+			</h1>
+			<form onSubmit={ejecutar}>
+				<input type="text" value={input} onChange={(e) => setInput(e.target.value)} />
+			</form>
+			<div>
+				<ul>
+					{box.map((tarea, index) => {
 
-			<h1 className="text-center mt-5">Hello Rigo!</h1>
-			<p>
-				<img src={rigoImage} />
-			</p>
-			<a href="#" className="btn btn-success">
-				If you see this green button... bootstrap is working...
-			</a>
-			<p>
-				Made by{" "}
-				<a href="http://www.4geeksacademy.com">4Geeks Academy</a>, with
-				love!
-			</p>
+						return (
+							<li key={index}>
+								{tarea.label}
+								<span onClick={()=>borrar (index)} >X</span>
+							</li>
+						)
+					})}
+				</ul>
+			</div>
 		</div>
-	);
-};
 
-export default Home;
+	)
+
+
+}
+
+export default Home
